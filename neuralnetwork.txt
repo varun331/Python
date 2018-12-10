@@ -1,0 +1,46 @@
+from keras.layers import Conv2D, MaxPooling2D, GlobalAveragePooling2D
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Flatten
+
+model = Sequential()
+
+model.add(Dense(512,input_shape=X_train.shape[1:], activation='relu'))
+model.add(Dropout(0.2))
+model.add(Dense(512, activation='relu'))
+model.add(Dropout(0.2))
+model.add(Dense(200, activation='relu'))
+model.add(Dropout(0.3))
+model.add(Dense(132, activation='relu'))
+model.add(Dropout(0.3))
+model.add(Dense(1, activation='sigmoid'))
+
+### TODO: Define your architecture.
+
+model.summary()
+
+
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+from keras.callbacks import ModelCheckpoint  
+import h5py
+
+### TODO: specify the number of epochs that you would like to use to train the model.
+
+epochs = 100
+
+### Do NOT modify the code below this line.
+
+
+
+checkpointer = ModelCheckpoint(filepath='mnist.model.best.hdf5',verbose=1, save_best_only=True)
+
+model.fit(X_train, y_train, 
+          epochs=epochs, batch_size=60, validation_split=0.2,callbacks=[checkpointer], verbose=1,shuffle=True)
+
+model.load_weights('mnist.model.best.hdf5')
+
+score = model.evaluate(X_test, y_test, verbose=0)
+accuracy = 100*score[1]
+
+# print test accuracy
+print('Test accuracy: %.4f%%' % accuracy)
