@@ -44,21 +44,27 @@ class receipe:
         else:
             type2=a[(a.Type==2)&(a.Date<=today)&(a.ing!='pa')]
 
-        b = {}
+        self.b = {}
 
         list1 = type1.index.values.tolist()
         list2 = type2.index.values.tolist()
         d = random.choice(list1)
-        b.update(dict(zip(type1.loc[[d]].Dish,type1.loc[[d]].ing)))
+        self.b.update(dict(zip(type1.loc[[d]].Dish,type1.loc[[d]].ing)))
 
         for i in range(len(type2)):
-             if (len(b)<4):
+             if (len(self.b)<4):
                 r = random.choice(list2)
-                if type2.loc[[r]].ing.item() not in b.values():
-                    b.update(dict(zip(type2.loc[[r]].Dish,type2.loc[[r]].ing)))
+                if type2.loc[[r]].ing.item() not in self.b.values():
+                    self.b.update(dict(zip(type2.loc[[r]].Dish,type2.loc[[r]].ing)))
                     list2.remove(r)
-        c = str(b)
+        c = str(self.b)
         return (c)
+    
+    def email_msg(self):
+        list = self.b
+        return (list)
+
+
         #print (c)
     #display_recepie()
     
